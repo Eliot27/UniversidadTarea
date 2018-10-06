@@ -5,14 +5,27 @@
  */
 package control;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import modelo.Estudiante;
+import modelo.Imagen;
 
 /**
  *
  * @author dacastro
  */
 public class ControllerEstudiante {
+
+    public static boolean modificarEstudiante(Estudiante Obje) {
+        Boolean t= false;
+        Estudiante obje = new Estudiante();
+        String sql = "update estudiantes set identificacione=?,"+ "nombre1e=?, apellido1e=?, direccione=?,correoe=?,"+ "jornada=?, Fotoestudiante=? where codigoe=?;";
+        t= Obje.modificarEstudiante(sql,Obje);
+        
+        
+        
+        return t;
+    }
 
     public ControllerEstudiante() {
     }
@@ -50,13 +63,13 @@ public class ControllerEstudiante {
         return t;
     }
 
-    public LinkedList<Estudiante> buscarECodigo(String buscarpor) {
-        
-        String sql="Select * from estudiantes where codigoe='"+buscarpor+"';";
-        Estudiante e=new Estudiante();
-        
-        LinkedList<Estudiante> le=e.buscarEst(sql);
-        
+    public HashMap<Estudiante, Imagen> buscarECodigo(String buscarpor) {
+
+        String sql = "Select * from estudiantes where codigoe='" + buscarpor + "';";
+        Estudiante e = new Estudiante();
+
+        HashMap<Estudiante, Imagen> le = e.buscarEst(sql);
+
         return le;
     }
 }

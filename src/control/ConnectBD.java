@@ -6,6 +6,8 @@
 package control;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,6 +42,10 @@ public class ConnectBD {
 
         return true;
     }
-    
 
+    public Statement getSt() {
+        return st;
+    }   
+   
+    
 }

@@ -6,12 +6,16 @@
 package vista;
 
 import control.ControllerEstudiante;
+import control.FileController;
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Estudiante;
+import modelo.Imagen;
 
 /**
  *
@@ -22,6 +26,9 @@ public class ModificarEstudiante extends javax.swing.JFrame {
     /**
      * Creates new form ModificarEstudiante
      */
+    File filesObj;
+    String Rutaimage;
+    Estudiante Obje;
     public ModificarEstudiante() {
         initComponents();
     }
@@ -57,6 +64,7 @@ public class ModificarEstudiante extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +84,9 @@ public class ModificarEstudiante extends javax.swing.JFrame {
 
         jLabel8.setText("Jornada");
 
+        jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(204, 204, 204));
+
         jButton1.setText("Guardar Cambios");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +103,12 @@ public class ModificarEstudiante extends javax.swing.JFrame {
 
         jLabel5.setText("Nombre");
 
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
+
         jButton3.setText("Cargar Imagen");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +122,13 @@ public class ModificarEstudiante extends javax.swing.JFrame {
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Regresar a Menu");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
             }
         });
 
@@ -146,11 +170,13 @@ public class ModificarEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(152, 152, 152))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97))))
+                        .addGap(97, 97, 97))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(117, 117, 117))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -163,9 +189,9 @@ public class ModificarEstudiante extends javax.swing.JFrame {
                             .addGap(140, 140, 140)
                             .addComponent(jLabel1))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(126, 126, 126)
+                            .addGap(119, 119, 119)
                             .addComponent(jLabel2)
-                            .addGap(74, 74, 74)
+                            .addGap(81, 81, 81)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +240,8 @@ public class ModificarEstudiante extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton5))))
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -231,12 +258,12 @@ public class ModificarEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-//        FileController objfile = new FileController();
-//        filesObj = objfile.cargarArchivos("JPG file", "PNG file", "jpg", "png");
-//        Rutaimage = filesObj.getAbsolutePath();
-//        System.out.println("ruta imagen " + filesObj.getAbsolutePath());
-//        //BufferedImage buffered = (BufferedImage) image;
-//        jLabel9.setIcon(new javax.swing.ImageIcon(filesObj.getAbsolutePath()));
+        FileController objfile = new FileController();
+        filesObj = objfile.cargarArchivos("JPG file", "PNG file", "jpg", "png");
+        Rutaimage = filesObj.getAbsolutePath();
+        System.out.println("ruta imagen " + filesObj.getAbsolutePath());
+        //BufferedImage buffered = (BufferedImage) image;
+        jLabel9.setIcon(new javax.swing.ImageIcon(filesObj.getAbsolutePath()));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -246,18 +273,18 @@ public class ModificarEstudiante extends javax.swing.JFrame {
         ControllerEstudiante obc=new ControllerEstudiante();
         //        boolean conexion;
         //        BaseDatos objbases = new BaseDatos();
-        LinkedList<Estudiante> le= obc.buscarECodigo(buscarpor);
+        HashMap<Estudiante, Imagen> le= obc.buscarECodigo(buscarpor);
+      
         
-       
-
-                jTextField1.setText(arr.get(0).toString());
-                jTextField2.setText(arr.get(2).toString());
-                jTextField3.setText(arr.get(1).toString());
-                jTextField4.setText(arr.get(3).toString());
-                jTextField5.setText(arr.get(4).toString());
-                jTextField6.setText(arr.get(5).toString());
-                jTextField7.setText(arr.get(6).toString());
-                jLabel9.setIcon(new javax.swing.ImageIcon((Image) arr.get(7)));
+      
+                jTextField2.setText(le.entrySet().iterator().next().getKey().getIdentificacione());
+                jTextField3.setText(le.entrySet().iterator().next().getKey().getCodigoe());
+                jTextField4.setText(le.entrySet().iterator().next().getKey().getNombre1e());
+                jTextField8.setText(le.entrySet().iterator().next().getKey().getApellido1e());
+                jTextField5.setText(le.entrySet().iterator().next().getKey().getDireccione());
+                jTextField6.setText(le.entrySet().iterator().next().getKey().getCorreoe());
+                jTextField7.setText(le.entrySet().iterator().next().getKey().getJornada());
+                jLabel9.setIcon(new javax.swing.ImageIcon((Image) le.entrySet().iterator().next().getValue().getImgen()));
 
             
         
@@ -266,16 +293,28 @@ public class ModificarEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        String identificacione = jTextField1.getText();
-//        String codigoe = jTextField2.getText();
-//        String nombre1e = jTextField3.getText();
-//        String apellido1e = jTextField4.getText();
-//        String direccione = jTextField5.getText();
-//        String correoe = jTextField6.getText();
-//        String jornada = jTextField7.getText();
-//
-//        le.add(new Estudiante(identificacione, codigoe, nombre1e, apellido1e, direccione, correoe, jornada, Rutaimage));
+        String identificacione = jTextField2.getText();
+        String codigoe = jTextField3.getText();
+        String nombre1e = jTextField4.getText();
+        String apellido1e = jTextField8.getText();
+        String direccione = jTextField5.getText();
+        String correoe = jTextField6.getText();
+        String jornada = jTextField7.getText();
+
+        Obje = new Estudiante(identificacione, codigoe, nombre1e, apellido1e, direccione, correoe, jornada, Rutaimage);
+        boolean t = ControllerEstudiante.modificarEstudiante(Obje);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField8ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        Menu m = new Menu();
+        this.setVisible(false);
+        m.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,6 +356,7 @@ public class ModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

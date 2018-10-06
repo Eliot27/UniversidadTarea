@@ -6,14 +6,22 @@
 package modelo;
 
 import control.ConnectBD;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -271,7 +279,7 @@ public class Estudiante {
 
     public boolean insertEstudianteImg(String sql, LinkedList<Estudiante> le) {
         FileInputStream fis = null;
-        boolean t=false;
+        boolean t = false;
         PreparedStatement ps = null;
         ConnectBD objC = new ConnectBD();
         for (int i = 0; i < le.size(); i++) {
@@ -291,7 +299,7 @@ public class Estudiante {
                     ps.setBinaryStream(8, fis, (int) file.length());
                     ps.executeUpdate();
                     objC.getConexion().commit();
-                    t= true;
+                    t = true;
                 }
             } catch (Exception ex) {
                 System.out.println(" error " + ex.toString());
@@ -310,11 +318,75 @@ public class Estudiante {
         return t;
     }
 
-    public LinkedList<Estudiante> buscarEst(String sql) {
-        ConnectBD objc=new ConnectBD();
-        if(objc.crearConexion()){
-            
+    public HashMap<Estudiante, Imagen> buscarEst(String sql) {
+        HashMap<Estudiante, Imagen> hs = new HashMap<>();
+        ConnectBD objc = new ConnectBD();
+        if (objc.crearConexion()) {
+            try {
+                ResultSet rs = objc.getSt().executeQuery(sql);
+                while (rs.next()) {
+                    Imagen imagen = new Imagen();
+                    String idestudiantes = rs.getObject("identificacione").toString();
+                    String codigoestudiante = rs.getObject("codigoe").toString();
+                    String nombreestudiante = rs.getObject("nombre1e").toString();
+                    String apellidoestudiante = rs.getObject("apellido1e").toString();
+                    String direccionestudiante = rs.getObject("direccione").toString();
+                    String correoestudiante = rs.getObject("correoe").toString();
+                    Blob blob = rs.getBlob("Fotoestudiante");
+
+                    Estudiante e = new Estudiante(idestudiantes, codigoestudiante, nombreestudiante, apellidoestudiante, direccionestudiante, correoestudiante, jornada);
+
+                    byte[] data = blob.getBytes(1, (int) blob.length());
+                    BufferedImage img = null;
+                    try {
+                        img = ImageIO.read(new ByteArrayInputStream(data));
+                    } catch (IOException ex) {
+                        System.out.println("error" + ex.toString());
+
+                    }
+                    imagen.setImgen(img);
+                    hs.put(e, imagen);
+                }
+
+            } catch (SQLException ex) {
+                System.out.println("error" + ex.toString());
+            }
         }
+        return hs;
+    }
+
+    public Boolean modificarEstudiante(String sql, Estudiante Obje) {
+        boolean t=false;
+        FileInputStream fis = null;
+        ConnectBD objc = new ConnectBD();
+        if(objc.crearConexion())
+            try{
+                PreparedStatement preparedSt = objc.getConexion().prepareStatement(sql);
+                preparedSt.setString(1, Obje.getIdentificacione());
+                preparedSt.setString(2, Obje.getNombre1e());
+                preparedSt.setString(3, Obje.getApellido1e());
+                preparedSt.setString(4, Obje.getDireccione());
+                preparedSt.setString(5, Obje.getCorreoe());
+                preparedSt.setString(6, Obje.getJornada());
+                File file = new File(Obje.getFotoestudiante());
+                try{
+                    fis = new FileInputStream(file);
+                    preparedSt.setBinaryStream(7, fis,(int)file.length());
+                }catch(FileNotFoundException ex){
+                    t = false;
+                    System.err.println("Error"+ ex.toString());
+                    
+                }
+                preparedSt.setString(8,Obje.getCodigoe());
+                preparedSt.executeUpdate();
+                preparedSt.close();
+                t=true;
+            }catch(SQLException e){
+                t = false;
+                System.err.println("Error" + e.toString());
+            }
+        
+        return t;
     }
 
 }
