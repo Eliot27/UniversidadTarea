@@ -36,7 +36,7 @@ public class Consulta extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton2);
         buttonGroup1.add(jRadioButton3);
         buttonGroup1.add(jRadioButton4);
-        System.out.println("hola1");
+        System.out.println("hola2");
     }
 
     void mostrardatos1(String date1, String date2) {
